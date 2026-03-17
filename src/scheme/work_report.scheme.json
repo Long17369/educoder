@@ -1,0 +1,470 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "status": {
+            "type": "integer"
+        },
+        "homework_common_id": {
+            "type": "integer"
+        },
+        "course_id": {
+            "type": "integer"
+        },
+        "action_analysis": {
+            "type": "boolean"
+        },
+        "category": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "category_name": {
+                    "type": "string"
+                },
+                "main": {
+                    "type": "integer"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "category_id",
+                "category_name",
+                "main"
+            ]
+        },
+        "course_name": {
+            "type": "string"
+        },
+        "work_id": {
+            "type": "integer"
+        },
+        "work_efficiency": {
+            "type": "boolean"
+        },
+        "has_shixun_work_comment": {
+            "type": "boolean"
+        },
+        "is_old_data_for_time": {
+            "type": "boolean"
+        },
+        "homework_name": {
+            "type": "string"
+        },
+        "ai_code_evaluation_promote": {
+            "type": "string"
+        },
+        "is_open_submit_test_result": {
+            "type": "boolean"
+        },
+        "review_id": {
+            "type": "null"
+        },
+        "review_rate": {
+            "type": "null"
+        },
+        "group_name": {
+            "type": "string"
+        },
+        "work_status": {
+            "type": "integer"
+        },
+        "complete_count": {
+            "type": "integer"
+        },
+        "cost_time": {
+            "type": "string"
+        },
+        "final_score": {
+            "type": "string"
+        },
+        "extra_score": {
+            "type": "integer"
+        },
+        "eff_score": {
+            "type": "integer"
+        },
+        "current_complete_count": {
+            "type": "integer"
+        },
+        "checked_challenge_count": {
+            "type": "integer"
+        },
+        "compelete_status": {
+            "type": "integer"
+        },
+        "work_score": {
+            "type": "string"
+        },
+        "has_commit": {
+            "type": "boolean"
+        },
+        "passed_time": {
+            "type": "string"
+        },
+        "myshixun_id": {
+            "type": "integer"
+        },
+        "myshixun_identifier": {
+            "type": "string"
+        },
+        "view_tpi": {
+            "type": "boolean"
+        },
+        "shixun_identifier": {
+            "type": "string"
+        },
+        "shixun_name": {
+            "type": "string"
+        },
+        "overall_appraisal": {
+            "type": "string"
+        },
+        "myself_experience": {
+            "type": "integer"
+        },
+        "total_experience": {
+            "type": "integer"
+        },
+        "all_work_score": {
+            "type": "string"
+        },
+        "time_consuming": {
+            "type": "string"
+        },
+        "evaluate_count": {
+            "type": "integer"
+        },
+        "human_training_time_rules": {
+            "type": "string"
+        },
+        "stage_list": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "open_time": {
+                        "type": "string"
+                    },
+                    "evaluate_count": {
+                        "type": "integer"
+                    },
+                    "finished_time": {
+                        "type": "string"
+                    },
+                    "time_consuming": {
+                        "type": "string"
+                    },
+                    "myself_experience": {
+                        "type": "integer"
+                    },
+                    "experience": {
+                        "type": "integer"
+                    },
+                    "complete_status": {
+                        "type": "integer"
+                    },
+                    "challenge_id": {
+                        "type": "integer"
+                    },
+                    "challenge_num": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "game_score_full": {
+                        "type": "number"
+                    },
+                    "game_score": {
+                        "type": "string"
+                    },
+                    "view_answer": {
+                        "type": "boolean"
+                    },
+                    "diff_code_count": {
+                        "type": "integer"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "name",
+                    "open_time",
+                    "evaluate_count",
+                    "finished_time",
+                    "time_consuming",
+                    "myself_experience",
+                    "experience",
+                    "complete_status",
+                    "challenge_id",
+                    "challenge_num",
+                    "status",
+                    "game_score_full",
+                    "game_score",
+                    "view_answer",
+                    "diff_code_count"
+                ]
+            }
+        },
+        "target_test_sets": {
+            "type": "array"
+        },
+        "work_description": {
+            "type": "null"
+        },
+        "repeat_minus_score": {
+            "type": "integer"
+        },
+        "have_repeat": {
+            "type": "boolean"
+        },
+        "repeat_setting_score": {
+            "type": "integer"
+        },
+        "is_repeat_minus": {
+            "type": "boolean"
+        },
+        "user_id": {
+            "type": "integer"
+        },
+        "username": {
+            "type": "string"
+        },
+        "student_id": {
+            "type": "string"
+        },
+        "image_url": {
+            "type": "string"
+        },
+        "challenges_count": {
+            "type": "integer"
+        },
+        "efficiency": {
+            "type": "null"
+        },
+        "max_efficiency": {
+            "type": "null"
+        },
+        "work_comment": {
+            "type": "null"
+        },
+        "work_comment_hidden": {
+            "type": "null"
+        },
+        "comment_id": {
+            "type": "null"
+        },
+        "shixun_detail": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "game_identifier": {
+                        "type": "string"
+                    },
+                    "myshixun_id": {
+                        "type": "integer"
+                    },
+                    "st": {
+                        "type": "integer"
+                    },
+                    "challenge_id": {
+                        "type": "integer"
+                    },
+                    "challenge_description": {
+                        "type": "string",
+                        "description": "题目描述"
+                    },
+                    "comment": {
+                        "type": "string"
+                    },
+                    "comment_updated_at": {
+                        "type": "null"
+                    },
+                    "complete_status": {
+                        "type": "integer"
+                    },
+                    "position": {
+                        "type": "integer"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "subject": {
+                        "type": "string"
+                    },
+                    "diff_code_count": {
+                        "type": "integer"
+                    },
+                    "outputs": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "position": {
+                                    "type": "integer"
+                                },
+                                "output_detail": {
+                                    "type": "string"
+                                },
+                                "ts_mem": {
+                                    "type": "number"
+                                },
+                                "ts_time": {
+                                    "type": "number"
+                                },
+                                "query_index": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "string"
+                                },
+                                "test_set_passed_rate": {
+                                    "type": "integer"
+                                },
+                                "is_work_end_evaluate": {
+                                    "type": "boolean"
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "position",
+                                "output_detail",
+                                "ts_mem",
+                                "ts_time",
+                                "query_index",
+                                "created_at",
+                                "test_set_passed_rate",
+                                "is_work_end_evaluate"
+                            ]
+                        }
+                    },
+                    "game_codes_cn": {
+                        "type": "string",
+                        "default": "学员代码"
+                    },
+                    "game_codes": {
+                        "type": "array",
+                        "description": "代码",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "path": {
+                                    "type": "string",
+                                    "description": "代码路径"
+                                },
+                                "filename": {
+                                    "type": "string",
+                                    "description": "代码文件名"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "代码内容"
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "path",
+                                "filename",
+                                "content"
+                            ]
+                        }
+                    },
+                    "adjust_review_score_list": {
+                        "type": "array"
+                    },
+                    "student_work_test_result_info": {
+                        "type": "null"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "id",
+                    "game_identifier",
+                    "myshixun_id",
+                    "st",
+                    "challenge_id",
+                    "challenge_description",
+                    "comment",
+                    "complete_status",
+                    "position",
+                    "path",
+                    "subject",
+                    "diff_code_count",
+                    "outputs",
+                    "game_codes_cn",
+                    "game_codes",
+                    "adjust_review_score_list"
+                ]
+            }
+        },
+        "homework_end": {
+            "type": "boolean"
+        },
+        "adjust_review_score_count": {
+            "type": "integer"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "status",
+        "homework_common_id",
+        "course_id",
+        "action_analysis",
+        "category",
+        "course_name",
+        "work_id",
+        "work_efficiency",
+        "has_shixun_work_comment",
+        "is_old_data_for_time",
+        "homework_name",
+        "ai_code_evaluation_promote",
+        "is_open_submit_test_result",
+        "group_name",
+        "work_status",
+        "complete_count",
+        "cost_time",
+        "final_score",
+        "extra_score",
+        "eff_score",
+        "current_complete_count",
+        "checked_challenge_count",
+        "compelete_status",
+        "work_score",
+        "has_commit",
+        "passed_time",
+        "myshixun_id",
+        "myshixun_identifier",
+        "view_tpi",
+        "shixun_identifier",
+        "shixun_name",
+        "overall_appraisal",
+        "myself_experience",
+        "total_experience",
+        "all_work_score",
+        "time_consuming",
+        "evaluate_count",
+        "human_training_time_rules",
+        "stage_list",
+        "target_test_sets",
+        "repeat_minus_score",
+        "have_repeat",
+        "repeat_setting_score",
+        "is_repeat_minus",
+        "user_id",
+        "username",
+        "student_id",
+        "image_url",
+        "challenges_count",
+        "shixun_detail",
+        "homework_end",
+        "adjust_review_score_count"
+    ]
+}

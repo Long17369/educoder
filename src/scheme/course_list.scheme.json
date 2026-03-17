@@ -1,0 +1,100 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "count": {
+            "type": "integer",
+            "description": "课程数量"
+        },
+        "courses": {
+            "description": "课程列表",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "课程id"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "课程名称"
+                    },
+                    "members_count": {
+                        "type": "integer"
+                    },
+                    "homework_commons_count": {
+                        "type": "integer"
+                    },
+                    "attachments_count": {
+                        "type": "integer"
+                    },
+                    "visits": {
+                        "type": "integer"
+                    },
+                    "school": {
+                        "type": "string"
+                    },
+                    "teacher_users": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "is_end": {
+                        "type": "boolean"
+                    },
+                    "first_category_url": {
+                        "type": "string",
+                        "description": "课程 url"
+                    },
+                    "first_category": {
+                        "type": "object",
+                        "properties": {
+                            "module_type": {
+                                "type": "string"
+                            },
+                            "id": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "is_public": {
+                        "type": "integer"
+                    },
+                    "can_visited": {
+                        "type": "boolean"
+                    },
+                    "teacher": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "real_name": {
+                                "type": "string"
+                            },
+                            "avatar_url": {
+                                "type": "string"
+                            },
+                            "school_name": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "forbid_visit_info": {
+                        "type": "object",
+                        "properties": {
+                            "username": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@ from yarl import URL
 from base.requsets import EducoderSession
 
 
-async def get_course_list(session: EducoderSession, username: str) -> dict[str, Any]:
+async def get_origin_course_list(session: EducoderSession, username: str) -> dict[str, Any]:
     """获取课程列表
 
     参数:
@@ -31,9 +31,9 @@ async def get_course_list(session: EducoderSession, username: str) -> dict[str, 
     return
 
 
-async def get_course_url_list(
+async def get_course_list(
     session: EducoderSession, username: str
-) -> dict[str, URL]:
+) -> dict[str, tuple[URL, str]]:
     """获取课程 URL 列表
 
     参数:
@@ -41,12 +41,13 @@ async def get_course_url_list(
     - `username`: 用户名 // 由 `get_user_info` 获取的字典的 `login` 字段
 
     返回值:
-    一个字典，键为课程名称，值为课程 URL
+    一个字典，键为课程名称，值为一个元组，包含课程 URL 和 课程uuid
     """
-    data = await get_course_list(session, username)
-    course_url_list: dict[str, URL] = {}
+    data = await get_origin_course_list(session, username)
+    course_url_list: dict[str, tuple[URL, str]] = {}
     for course in data["courses"]:
-        course_url_list[course["name"]] = URL(
-            "https://www.educoder.net" + course["first_category_url"]
+        course_url_list[course["name"]] = (
+            URL("https://www.educoder.net" + course["first_category_url"]),
+            course["first_category_url"].split("/")[2],
         )
     return course_url_list

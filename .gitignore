@@ -1,0 +1,16 @@
+# ignore virtual environment
+.venv/*
+
+# ignore test files
+**/test/*
+test*
+
+# ignore pycache and pyc files
+**/__pycache__
+*.pyc
+
+# ignore log files
+*.log
+
+# ignore vscode settings
+.vscode/*

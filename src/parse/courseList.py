@@ -1,7 +1,7 @@
 from typing import Any
 
 from yarl import URL
-from base.requsets import EducoderSession
+from base import EducoderSession
 
 
 async def get_origin_course_list(session: EducoderSession, username: str) -> dict[str, Any]:

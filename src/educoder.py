@@ -1,0 +1,54 @@
+from yarl import URL
+
+from parse import get_course_list, get_homework_list, get_work_report, get_user_info
+from base import EducoderSession
+from login import login
+
+
+class Educoder:
+    def __init__(self) -> None:
+        self.session = EducoderSession()
+        self._logined = False
+        pass
+
+    @property
+    def logined(self) -> bool:
+        return self._logined
+
+    async def login(self, username: str, password: str):
+        cookies = await login(username, password)
+        if cookies is not None:
+            self.session.cookie_jar.update_cookies(cookies, URL("https://educoder.net"))
+            self._logined = True
+        else:
+            raise Exception("登录失败")
+
+    async def get_course_list(self):
+        if not self.logined:
+            raise Exception("请先登录")
+        user_info = await get_user_info(self.session)
+        course_list = await get_course_list(self.session, user_info["login"])
+        return course_list
+
+    async def get_homework_list(self, course_uuid: str):
+        if not self.logined:
+            raise Exception("请先登录")
+        homework_list = await get_homework_list(self.session, course_uuid)
+        return homework_list
+
+    async def get_work_report(self, student_work_id: str):
+        if not self.logined:
+            raise Exception("请先登录")
+        work_report = await get_work_report(self.session, student_work_id)
+        return work_report
+
+    async def __aenter__(self, username: str, password: str):
+        try:
+            await self.login(username, password)
+        except Exception as e:
+            await self.session.close()
+            raise e
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):  # type: ignore
+        await self.session.close()

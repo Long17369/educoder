@@ -16,12 +16,10 @@ class Educoder:
         return self._logined
 
     async def login(self):
-        cookies = await login(self.username, self.password)
-        if cookies is not None:
-            self.session.cookie_jar.update_cookies({cookie.key: cookie.value for cookie in cookies})
-            self._logined = True
-        else:
+        cookies = await login(self.username, self.password, self.session)
+        if cookies is None:
             raise Exception("登录失败")
+        self._logined = True
 
     async def get_course_list(self):
         if not self.logined:

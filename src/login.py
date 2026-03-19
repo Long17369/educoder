@@ -4,7 +4,6 @@ from base64 import b64encode
 from yarl import URL
 
 from .base import EducoderSession
-from .make_header import make_header
 
 
 def encrypt_password(password: str) -> str:
@@ -16,7 +15,7 @@ def encrypt_password(password: str) -> str:
     return result
 
 
-async def login(username: str, password: str):
+async def login(username: str, password: str, session: EducoderSession | None = None):
     """登录
 
     参数:
@@ -27,15 +26,16 @@ async def login(username: str, password: str):
     登录成功时返回一个 `http.cookies.SimpleCookie` 对象，包含登录后的 cookies。
     登录失败时返回 `None`。
     """
+    if session is None:
+        session = EducoderSession()
     url = URL("https://data.educoder.net/api/accounts/login.json")
-    async with EducoderSession(headers=make_header("POST")) as session:
-        async with session.post(
-            url, json={"login": username, "password": encrypt_password(password)}
-        ) as response:
-            if response.status == 200:
-                return session.cookie_jar
-            else:
-                return None
+    async with session.post(
+        url, json={"login": username, "password": encrypt_password(password)}
+    ) as response:
+        if response.status == 200:
+            return session.cookie_jar
+        else:
+            return None
 
 
 if __name__ == "__main__":

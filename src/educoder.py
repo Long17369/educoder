@@ -1,12 +1,12 @@
-from yarl import URL
-
-from parse import get_course_list, get_homework_list, get_work_report, get_user_info
-from base import EducoderSession
-from login import login
+from .parse import get_course_list, get_homework_list, get_work_report, get_user_info
+from .base import EducoderSession
+from .login import login
 
 
 class Educoder:
-    def __init__(self) -> None:
+    def __init__(self, username: str = "", password: str = "") -> None:
+        self.username = username
+        self.password = password
         self.session = EducoderSession()
         self._logined = False
         pass
@@ -15,10 +15,10 @@ class Educoder:
     def logined(self) -> bool:
         return self._logined
 
-    async def login(self, username: str, password: str):
-        cookies = await login(username, password)
+    async def login(self):
+        cookies = await login(self.username, self.password)
         if cookies is not None:
-            self.session.cookie_jar.update_cookies(cookies, URL("https://educoder.net"))
+            self.session.cookie_jar.update_cookies({cookie.key: cookie.value for cookie in cookies})
             self._logined = True
         else:
             raise Exception("登录失败")
@@ -42,9 +42,9 @@ class Educoder:
         work_report = await get_work_report(self.session, student_work_id)
         return work_report
 
-    async def __aenter__(self, username: str, password: str):
+    async def __aenter__(self):
         try:
-            await self.login(username, password)
+            await self.login()
         except Exception as e:
             await self.session.close()
             raise e

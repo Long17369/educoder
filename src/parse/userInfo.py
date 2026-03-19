@@ -1,5 +1,5 @@
 from typing import Any
-from base import EducoderSession
+from ..base import EducoderSession
 
 
 async def get_origin_user_info(session: EducoderSession) -> dict[str, Any]:

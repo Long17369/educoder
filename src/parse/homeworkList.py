@@ -1,4 +1,4 @@
-from base import EducoderSession
+from ..base import EducoderSession
 
 
 async def get_origin_homework_list(session: EducoderSession, course_uuid: str):

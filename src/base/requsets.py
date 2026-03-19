@@ -2,7 +2,7 @@ from typing import Any, Mapping
 from aiohttp import ClientSession, ClientResponse
 from yarl import URL
 
-from make_header import make_header
+from ..make_header import make_header
 
 
 class EducoderSession(ClientSession):

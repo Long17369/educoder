@@ -1,4 +1,4 @@
-from base import EducoderSession
+from ..base import EducoderSession
 
 
 async def get_origin_work_report(session: EducoderSession, student_work_id: str):

@@ -3,8 +3,8 @@ from Crypto.Util.Padding import pad
 from base64 import b64encode
 from yarl import URL
 
-from base.requsets import EducoderSession
-from make_header import make_header
+from .base import EducoderSession
+from .make_header import make_header
 
 
 def encrypt_password(password: str) -> str:
@@ -33,7 +33,7 @@ async def login(username: str, password: str):
             url, json={"login": username, "password": encrypt_password(password)}
         ) as response:
             if response.status == 200:
-                return session.cookie_jar.filter_cookies(url)
+                return session.cookie_jar
             else:
                 return None
 

@@ -1,5 +1,6 @@
 from .base import EducoderSession
 from .login import login
+from .models import CourseUUID, StudentWorkID
 from .parse import get_course_list, get_homework_list, get_user_info, get_work_report
 
 
@@ -25,16 +26,16 @@ class Educoder:
         if not self.logined:
             raise Exception("请先登录")
         user_info = await get_user_info(self.session)
-        course_list = await get_course_list(self.session, user_info["login"])
+        course_list = await get_course_list(self.session, user_info.login)
         return course_list
 
-    async def get_homework_list(self, course_uuid: str):
+    async def get_homework_list(self, course_uuid: CourseUUID):
         if not self.logined:
             raise Exception("请先登录")
         homework_list = await get_homework_list(self.session, course_uuid)
         return homework_list
 
-    async def get_work_report(self, student_work_id: str):
+    async def get_work_report(self, student_work_id: StudentWorkID):
         if not self.logined:
             raise Exception("请先登录")
         work_report = await get_work_report(self.session, student_work_id)

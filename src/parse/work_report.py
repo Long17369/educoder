@@ -1,7 +1,10 @@
 from ..base import EducoderSession
+from ..models import CodeItem, StudentWorkID, WorkReportItem
 
 
-async def get_origin_work_report(session: EducoderSession, student_work_id: str):
+async def get_origin_work_report(
+    session: EducoderSession, student_work_id: StudentWorkID
+):
     """获取作业报告
 
     参数:
@@ -22,25 +25,31 @@ async def get_origin_work_report(session: EducoderSession, student_work_id: str)
 
 
 async def get_work_report(
-    session: EducoderSession, student_work_id: str
-) -> list[tuple[str, str, list[dict[str, str]]]]:
+    session: EducoderSession, student_work_id: StudentWorkID
+) -> list[WorkReportItem]:
     """获取作业报告
 
     参数:
     - `session`: EducoderSession 对象
-    - `student_work_id`: 学生作业 id // 由 `get_homework_list` 获取的列表中每个元组的第三个元素
+    - `student_work_id`: 学生作业 id // 由 `get_homework_list` 获取的列表中每个元素的 student_work_id
     返回值:
-    一个列表，每个元素是一个元组，包含以下三个元素:
-    - 课程名称 (str)
-    - 课程描述 (str)
-    - 课程代码列表 (list[dict[str, str]])
-        - 每个字典包含以下字段:
-            - `path`: 代码路径 (str)
-            - `filename`: 代码文件名 (str)
-            - `content`: 代码内容 (str)
+    一个 WorkReportItem 列表
     """
     data = await get_origin_work_report(session, student_work_id)
-    result: list[tuple[str, str, list[dict[str, str]]]] = []
+    result: list[WorkReportItem] = []
     for i in data["shixun_detail"]:
-        result.append((i["subject"], i["challenge_description"], i["game_codes"]))
+        result.append(
+            WorkReportItem(
+                subject=i["subject"],
+                challenge_description=i["challenge_description"],
+                game_codes=[
+                    CodeItem(
+                        content=code.get("content", ""),
+                        filename=code.get("filename", ""),
+                        path=code.get("path", ""),
+                    )
+                    for code in i["game_codes"]
+                ],
+            )
+        )
     return result

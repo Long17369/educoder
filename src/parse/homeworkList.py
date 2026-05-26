@@ -1,10 +1,11 @@
 from typing import Any
 
 from ..base import EducoderSession, gather_with_progress
+from ..models import CourseUUID, Homework, HomeworkID, StudentWorkID
 
 
 async def get_origin_homework_list(
-    session: EducoderSession, course_uuid: str, page: int = 1
+    session: EducoderSession, course_uuid: CourseUUID, page: int = 1
 ) -> dict[str, Any]:
     """获取原始作业列表
 
@@ -34,28 +35,25 @@ async def get_origin_homework_list(
         return data
 
 
-async def get_homework_list(session: EducoderSession, course_uuid: str):
+async def get_homework_list(session: EducoderSession, course_uuid: CourseUUID):
     """获取作业列表, 自动处理分页
 
     参数:
     - `session`: EducoderSession 对象
-    - `course_uuid`: 课程 uuid // 由 `get_course_url_list` 获取的字典的值的第二个元素
+    - `course_uuid`: 课程 uuid
     返回值:
-    一个列表，每个元素是一个元组，包含:
-    - 作业名称 `homework_name`
-    - 作业 id `homework_id`
-    - 学生作业 id `student_work_id`
+    Homework 列表
     """
 
     async def get_homework_list_page(page: int):
         data = await get_origin_homework_list(session, course_uuid, page)
-        homework_list: list[tuple[str, str, str]] = []
+        homework_list: list[Homework] = []
         for homework in data["homeworks"]:
             homework_list.append(
-                (
-                    homework["name"],
-                    homework["homework_id"],
-                    homework["student_work_id"],
+                Homework(
+                    name=homework["name"],
+                    homework_id=HomeworkID(str(homework["homework_id"])),
+                    student_work_id=StudentWorkID(str(homework["student_work_id"])),
                 )
             )
         return homework_list, data.get("query_total_count", 0)

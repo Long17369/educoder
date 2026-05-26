@@ -1,6 +1,7 @@
+from base64 import b64encode
+
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
-from base64 import b64encode
 from yarl import URL
 
 from .base import EducoderSession

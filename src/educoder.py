@@ -1,6 +1,6 @@
-from .parse import get_course_list, get_homework_list, get_work_report, get_user_info
 from .base import EducoderSession
 from .login import login
+from .parse import get_course_list, get_homework_list, get_user_info, get_work_report
 
 
 class Educoder:

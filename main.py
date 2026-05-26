@@ -1,10 +1,12 @@
+import hashlib
 import json
 import os
-import hashlib
-from typing import Any, cast
-from asyncio import run, gather
-from src.educoder import Educoder
+from asyncio import gather, run
 from pathlib import Path
+from typing import Any, Coroutine, cast
+
+from src.base import gather_with_progress
+from src.educoder import Educoder
 
 
 def make_numeric_id(seed: str, length: int = 12) -> str:
@@ -130,6 +132,7 @@ async def write_work_report(
     homework_dir = output_root / homework_folder_id
 
     problem_refs: list[dict[str, str]] = []
+    write_tasks: list[Coroutine[Any, Any, None]] = []
     for index, (title, description, codes) in enumerate(work_report):
         problem_id = make_numeric_id(
             f"homework:{homework_id}:problem:{index}:{title}:{description}"
@@ -137,9 +140,15 @@ async def write_work_report(
         problem_refs.append({"id": problem_id, "title": title})
         problem_dir = homework_dir / problem_id
         problem_data = build_problem_data(title, description, codes)
-        await write_data_json(problem_dir, problem_data)
+        write_tasks.append(write_data_json(problem_dir, problem_data))
 
-    homework_data = merge_problem_set_content(homework_dir, home_work_name, problem_refs)
+    # 并行写入所有 problem 的 data.json
+    if write_tasks:
+        await gather(*write_tasks)
+
+    homework_data = merge_problem_set_content(
+        homework_dir, home_work_name, problem_refs
+    )
     await write_data_json(homework_dir, homework_data)
     return {"id": homework_folder_id, "title": home_work_name}
 
@@ -149,9 +158,14 @@ async def main():
     password = os.getenv("EDUCORDER_PASSWORD") or os.getenv("PASSWORD")
     if not username or not password:
         with open("config.json", "r", encoding="utf-8") as f:
-            config = json.load(f)
+            config: dict[str, str] = json.load(f)
             username = config.get("username")
             password = config.get("password")
+    if not username or not password:
+        print(
+            "请在环境变量中设置EDUCORDER_USERNAME和EDUCORDER_PASSWORD，或在config.json中提供用户名和密码。"
+        )
+        return
     async with Educoder(username, password) as educoder:
         course_list = await educoder.get_course_list()
         print("课程列表:")
@@ -175,6 +189,16 @@ async def main():
         course_folder = make_numeric_id(f"course:{course_uuid}")
         course_root = output_root / course_folder
 
+        # 先并行获取所有 work_report（网络 I/O，带进度条）
+        work_reports = await gather_with_progress(
+            [
+                educoder.get_work_report(homework_list[idx][2])
+                for idx in homework_idx_list
+            ],
+            desc="获取作业报告",
+        )
+
+        # 再并行写入所有作业数据（磁盘 I/O）
         homework_refs = await gather(
             *[
                 write_work_report(
@@ -182,9 +206,9 @@ async def main():
                     course_uuid,
                     homework_list[idx][0],
                     str(homework_list[idx][1]),
-                    await educoder.get_work_report(homework_list[idx][2]),
+                    work_reports[i],
                 )
-                for idx in homework_idx_list
+                for i, idx in enumerate(homework_idx_list)
             ]
         )
 

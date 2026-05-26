@@ -1,7 +1,11 @@
-from ..base import EducoderSession
+from typing import Any
+
+from ..base import EducoderSession, gather_with_progress
 
 
-async def get_origin_homework_list(session: EducoderSession, course_uuid: str):
+async def get_origin_homework_list(
+    session: EducoderSession, course_uuid: str, page: int = 1
+) -> dict[str, Any]:
     """获取原始作业列表
 
     参数:
@@ -24,14 +28,14 @@ async def get_origin_homework_list(session: EducoderSession, course_uuid: str):
     }
     ```
     """
-    url = f"https://data.educoder.net/api/courses/{course_uuid}/homework_commons.json"
+    url = f"https://data.educoder.net/api/courses/{course_uuid}/homework_commons.json?page={page}"
     async with session.get(url=url) as response:
         data = await response.json()
         return data
 
 
 async def get_homework_list(session: EducoderSession, course_uuid: str):
-    """获取作业列表
+    """获取作业列表, 自动处理分页
 
     参数:
     - `session`: EducoderSession 对象
@@ -42,14 +46,29 @@ async def get_homework_list(session: EducoderSession, course_uuid: str):
     - 作业 id `homework_id`
     - 学生作业 id `student_work_id`
     """
-    data = await get_origin_homework_list(session, course_uuid)
-    homework_list: list[tuple[str, str, str]] = []
-    for homework in data["homeworks"]:
-        homework_list.append(
-            (
-                homework["name"],
-                homework["homework_id"],
-                homework["student_work_id"],
+
+    async def get_homework_list_page(page: int):
+        data = await get_origin_homework_list(session, course_uuid, page)
+        homework_list: list[tuple[str, str, str]] = []
+        for homework in data["homeworks"]:
+            homework_list.append(
+                (
+                    homework["name"],
+                    homework["homework_id"],
+                    homework["student_work_id"],
+                )
             )
-        )
+        return homework_list, data.get("query_total_count", 0)
+
+    homework_list, total_count = await get_homework_list_page(1)
+
+    total_pages = (total_count + len(homework_list) - 1) // len(homework_list)
+    if total_pages <= 1:
+        return homework_list
+
+    tasks = [get_homework_list_page(page + 1) for page in range(1, total_pages)]
+    results = await gather_with_progress(tasks, desc="获取作业列表分页", unit="页")
+    for homework_list_page, _ in results:
+        homework_list.extend(homework_list_page)
+
     return homework_list

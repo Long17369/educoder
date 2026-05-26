@@ -1,5 +1,6 @@
 from typing import Any, Mapping
-from aiohttp import ClientSession, ClientResponse
+
+from aiohttp import ClientResponse, ClientSession
 from yarl import URL
 
 from ..make_header import make_header

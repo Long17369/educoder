@@ -1,9 +1,7 @@
 from typing import Any
 
-from yarl import URL
-
 from ..base import EducoderSession
-from ..models import Course, CourseUUID
+from ..models import Course
 
 
 async def get_origin_course_list(
@@ -48,11 +46,10 @@ async def get_course_list(session: EducoderSession, username: str) -> list[Cours
     data = await get_origin_course_list(session, username)
     course_url_list: list[Course] = []
     for course in data["courses"]:
-        course_url_list.append(
-            Course(
-                name=course["name"],
-                url="https://www.educoder.net" + course["first_category_url"],
-                uuid=CourseUUID(course["first_category_url"].split("/")[2]),
-            )
+        _course = Course(
+            name=course["name"],
+            url="https://www.educoder.net" + course["first_category_url"],
+            uuid=course["first_category_url"].split("/")[2],
         )
+        course_url_list.append(_course)
     return course_url_list

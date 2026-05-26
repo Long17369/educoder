@@ -38,18 +38,18 @@ async def get_work_report(
     data = await get_origin_work_report(session, student_work_id)
     result: list[WorkReportItem] = []
     for i in data["shixun_detail"]:
-        result.append(
-            WorkReportItem(
-                subject=i["subject"],
-                challenge_description=i["challenge_description"],
-                game_codes=[
-                    CodeItem(
-                        content=code.get("content", ""),
-                        filename=code.get("filename", ""),
-                        path=code.get("path", ""),
-                    )
-                    for code in i["game_codes"]
-                ],
+        game_codes = [
+            CodeItem(
+                content=code.get("content", ""),
+                filename=code.get("filename", ""),
+                path=code.get("path", ""),
             )
+            for code in i["game_codes"]
+        ]
+        word_report_item = WorkReportItem(
+            subject=i["subject"],
+            challenge_description=i["challenge_description"],
+            game_codes=game_codes,
         )
+        result.append(word_report_item)
     return result

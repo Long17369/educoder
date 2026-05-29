@@ -1,7 +1,7 @@
 from typing import Any
 
 from ..base import EducoderSession, gather_with_progress
-from ..models import CourseUUID, Homework
+from ..models import CourseUUID, Homework, HomeworkID, StudentWorkID
 
 
 async def get_origin_homework_list(
@@ -51,8 +51,8 @@ async def get_homework_list(session: EducoderSession, course_uuid: CourseUUID):
         for homework in data["homeworks"]:
             homework = Homework(
                 name=homework["name"],
-                homework_id=homework["homework_id"],
-                student_work_id=homework["student_work_id"],
+                homework_id=HomeworkID(str(homework["homework_id"])),
+                student_work_id=StudentWorkID(str(homework["student_work_id"])),
             )
             homework_list.append(homework)
         return homework_list, data.get("query_total_count", 0)
